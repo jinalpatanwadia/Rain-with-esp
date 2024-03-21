@@ -1,0 +1,43 @@
+// Include necessary libraries
+#include <ESP8266WiFi.h>
+
+// Define your Wi-Fi credentials
+const char* ssid = "YourWiFiSSID";
+const char* password = "YourWiFiPassword";
+
+// Define the pin connected to the raindrop sensor
+const int raindropPin = D1;
+
+void setup() {
+  // Initialize serial communication
+  Serial.begin(115200);
+
+  // Connect to Wi-Fi
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+
+  // Set the raindrop sensor pin as input
+  pinMode(raindropPin, INPUT);
+}
+
+void loop() {
+  // Read the value from the raindrop sensor
+  int raindropValue = digitalRead(raindropPin);
+
+  // If raindrop is detected (sensor output is LOW), print a message
+  if (raindropValue == LOW) {
+    Serial.println("Rain detected!");
+  }
+
+  // Delay before reading again
+  delay(1000);
+}
